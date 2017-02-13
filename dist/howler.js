@@ -483,6 +483,7 @@
       self._onvolume = o.onvolume ? [{fn: o.onvolume}] : [];
       self._onrate = o.onrate ? [{fn: o.onrate}] : [];
       self._onseek = o.onseek ? [{fn: o.onseek}] : [];
+      self._onxhrprogress = o.onxhrprogress ? [{fn: o.onxhrprogress}] : [];
       self._onresume = [];
 
       // Web Audio or HTML5 Audio?
@@ -1468,7 +1469,6 @@
         // Stop the sound if it is currently playing.
         if (!sounds[i]._paused) {
           self.stop(sounds[i]._id);
-          self._emit('end', sounds[i]._id);
         }
 
         // Remove the source or disconnect.
@@ -2061,6 +2061,11 @@
           self.load();
         }
       };
+      
+      xhr.onprogress =  function(oEvent) {
+        self._emit('xhrprogress', oEvent);
+      };
+      
       safeXhrSend(xhr);
     }
   };
